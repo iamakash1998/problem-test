@@ -13,18 +13,10 @@ jobs:
         run: npm install
       - name: Run tests
         run: npm test
-  lint:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Dependency installation
-        run: npm install
       - name: Run linter
         run: npm run lint
-  deploy:
-    needs: lint
+  build:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -33,5 +25,16 @@ jobs:
         run: npm install
       - name: Build project
         run: npm run build
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-files
+          path: |
+            dist          
+            package.json
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy to server
         run: echo "Deploying to server..." 
