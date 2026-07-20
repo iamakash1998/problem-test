@@ -9,6 +9,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      - name: cache dependencies
+        uses: actions/cache@v6
+        with:
+          path: ~/.npm
+          key: deps-node-${{ hashFiles('**/package-lock.json') }}
       - name: Dependency installation
         run: npm install
       - name: Run tests
@@ -21,6 +26,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      - name: cache dependencies
+        uses: actions/cache@v6
+        with:
+          path: ~/.npm
+          key: deps-node-${{ hashFiles('**/package-lock.json') }}
       - name: Dependency installation
         run: npm install
       - name: Build project
